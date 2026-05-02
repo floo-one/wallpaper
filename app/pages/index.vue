@@ -5,7 +5,7 @@ const wallpapers = [
     title: 'Life Calendar',
     description: 'A 90-year life calendar that visualizes the weeks you have lived and the weeks you have left.',
     path: '/life-calendar',
-    previewUrl: '/api/wallpaper?birthdate=1990-01-01&lifespan=90&bg_color=%23000000&filled_color=%23FFFFFF&empty_color=%23333333&width=1170&height=2532'
+    previewUrl: '/api/wallpaper?birthdate=2000-01-01&lifespan=90&bg_color=%23000000&filled_color=%23FFFFFF&empty_color=%23333333&width=1170&height=2532'
   }
   // We can add more wallpapers here later
 ]
@@ -25,28 +25,35 @@ const wallpapers = [
 
     <!-- Wallpaper Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <NuxtLink 
-        v-for="wallpaper in wallpapers" 
+      <NuxtLink
+        v-for="wallpaper in wallpapers"
         :key="wallpaper.id"
         :to="wallpaper.path"
         class="block group outline-none"
       >
-        <UCard 
+        <UCard
           class="h-full flex flex-col group-hover:ring-2 group-hover:ring-primary-500 group-focus-visible:ring-2 group-focus-visible:ring-primary-500 transition-all cursor-pointer"
         >
           <template #header>
             <h3 class="text-xl font-bold group-hover:text-primary-600 transition-colors">{{ wallpaper.title }}</h3>
             <p class="text-sm text-gray-500 line-clamp-2 mt-1">{{ wallpaper.description }}</p>
           </template>
-          
+
           <div class="flex-1 flex items-center justify-center py-8 bg-gray-50 dark:bg-gray-900/50 rounded-lg overflow-hidden group-hover:bg-gray-100 dark:group-hover:bg-gray-800/80 transition-colors">
-            <PhoneMockup :src="wallpaper.previewUrl" maxWidth="180px" class="transform transition-transform group-hover:scale-105" />
+            <PhoneMockup
+              :src="wallpaper.previewUrl"
+              max-width="180px"
+              class="transform transition-transform group-hover:scale-105"
+            />
           </div>
 
           <template #footer>
             <div class="flex items-center justify-between text-primary-600 font-medium">
               <span>Configure wallpaper</span>
-              <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+              <UIcon
+                name="i-heroicons-arrow-right"
+                class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+              />
             </div>
           </template>
         </UCard>

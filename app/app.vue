@@ -12,9 +12,9 @@ useHead({
 })
 
 useSeoMeta({
-  title: 'Life Calendar Wallpaper Generator',
-  description: 'Generate dynamic Life Calendar wallpapers for your iPhone shortcuts.',
-  ogTitle: 'Life Calendar Wallpaper Generator'
+  title: 'Dynamic Wallpaper Generator',
+  description: 'Generate dynamic wallpapers for your iPhone shortcuts.',
+  ogTitle: 'Dynamic Wallpaper Generator'
 })
 </script>
 
@@ -22,7 +22,10 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/" class="font-bold text-xl">
+        <NuxtLink
+          to="/"
+          class="font-bold text-xl"
+        >
           wallpaper
         </NuxtLink>
       </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const birthdate = ref('1990-01-01')
+const birthdate = ref()
 const lifespan = ref(90)
 const bgColor = ref('#000000')
 const filledColor = ref('#FFFFFF')
@@ -125,9 +125,10 @@ const copyUrl = async () => {
           </UFormField>
 
           <UFormField label="Device Preset">
-            <USelect
+            <USelectMenu
               v-model="selectedPreset"
               :items="presets"
+              class="w-full"
             />
           </UFormField>
 
@@ -154,9 +155,17 @@ const copyUrl = async () => {
         </template>
 
         <div class="flex justify-center bg-gray-100 dark:bg-gray-900 p-8 rounded-lg overflow-hidden">
-          <PhoneMockup :src="wallpaperUrl" maxWidth="320px" />
+          <PhoneMockup
+            :src="wallpaperUrl"
+            max-width="320px"
+          />
         </div>
       </UCard>
+    </div>
+
+    <!-- Installation Guide -->
+    <div class="mt-8">
+      <InstallationGuide />
     </div>
   </UContainer>
 </template>
