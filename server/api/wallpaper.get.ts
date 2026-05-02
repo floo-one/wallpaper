@@ -96,9 +96,9 @@ export default defineEventHandler(async (event) => {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    // Move percentage lower, avoiding the "Do Not Disturb" island. 
-    // Positioned in the middle of the bottom safe area
-    const textY = height - Math.floor(paddingBottom / 2)
+    // Move percentage higher to avoid the "Do Not Disturb" island. 
+    // Positioned near the top of the bottom safe area
+    const textY = height - paddingBottom + Math.floor(paddingBottom * 0.3)
     ctx.fillText(`${percentage}%`, width / 2, textY)
   }
 
