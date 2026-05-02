@@ -22,9 +22,9 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <div class="font-bold text-xl">
-          Life Calendar Generator
-        </div>
+        <NuxtLink to="/" class="font-bold text-xl">
+          wallpaper
+        </NuxtLink>
       </template>
 
       <template #right>
