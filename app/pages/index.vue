@@ -40,7 +40,7 @@ const wallpapers = [
           </template>
           
           <div class="flex-1 flex items-center justify-center py-8 bg-gray-50 dark:bg-gray-900/50 rounded-lg overflow-hidden group-hover:bg-gray-100 dark:group-hover:bg-gray-800/80 transition-colors">
-            <PhoneMockup :src="wallpaper.previewUrl" class="scale-[0.65] sm:scale-75 origin-center transform transition-transform group-hover:scale-75 sm:group-hover:scale-[0.80]" />
+            <PhoneMockup :src="wallpaper.previewUrl" maxWidth="180px" class="transform transition-transform group-hover:scale-105" />
           </div>
 
           <template #footer>

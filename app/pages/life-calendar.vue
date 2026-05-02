@@ -155,7 +155,7 @@ const copyUrl = async () => {
         </template>
 
         <div class="flex justify-center bg-gray-100 dark:bg-gray-900 p-8 rounded-lg overflow-hidden">
-          <PhoneMockup :src="wallpaperUrl" />
+          <PhoneMockup :src="wallpaperUrl" maxWidth="320px" />
         </div>
       </UCard>
     </div>

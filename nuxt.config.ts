@@ -5,6 +5,12 @@ export default defineNuxtConfig({
     '@nuxt/ui'
   ],
 
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === 'iphone-16-max'
+    }
+  },
+
   devtools: {
     enabled: true
   },
