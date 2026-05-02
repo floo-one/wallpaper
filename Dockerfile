@@ -17,6 +17,13 @@ FROM node:20-slim
 
 WORKDIR /app
 
+# Install runtime dependencies for canvas text rendering
+RUN apt-get update && apt-get install -y \
+    fonts-liberation \
+    fontconfig \
+    && fc-cache -f -v \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /app/.output ./.output
 
 EXPOSE 3000

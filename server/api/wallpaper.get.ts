@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   // Parse parameters with defaults
-  const birthdateStr = (query.birthdate as string) || '1990-01-01'
+  const birthdateStr = (query.birthdate as string) || '2000-05-07'
   const lifespan = parseInt((query.lifespan as string) || '90', 10)
   const width = parseInt((query.width as string) || '1170', 10) // iPhone 12/13 Pro width
   const height = parseInt((query.height as string) || '2532', 10) // iPhone 12/13 Pro height
@@ -48,26 +48,25 @@ export default defineEventHandler(async (event) => {
   const usableWidth = width - paddingSides * 2
   const usableHeight = height - paddingTop - paddingBottom
 
+  // Calculate cell width and height independently to fill the available space
   const cellWidth = usableWidth / cols
   const cellHeight = usableHeight / rows
 
-  // We want perfectly square cells, so we take the smaller of the two
-  const cellSize = Math.min(cellWidth, cellHeight)
-  const dotRadius = cellSize / 2 * 0.75 // 25% spacing between dots
+  // Ensure dots remain perfect circles by basing radius on the smaller cell dimension
+  const dotRadius = Math.min(cellWidth, cellHeight) / 2 * 0.75 // 25% spacing between dots
 
-  // Center the grid within the usable area
-  const actualGridWidth = cols * cellSize
-  const actualGridHeight = rows * cellSize
-  const offsetX = paddingSides + (usableWidth - actualGridWidth) / 2
-  const offsetY = paddingTop + (usableHeight - actualGridHeight) / 2
+  // Start drawing exactly from the padding edges
+  const offsetX = paddingSides
+  const offsetY = paddingTop
 
   // Drawing loop
   for (let i = 0; i < totalWeeks; i++) {
     const col = i % cols
     const row = Math.floor(i / cols)
 
-    const x = offsetX + col * cellSize + cellSize / 2
-    const y = offsetY + row * cellSize + cellSize / 2
+    // Center the dot within its stretched cell
+    const x = offsetX + col * cellWidth + cellWidth / 2
+    const y = offsetY + row * cellHeight + cellHeight / 2
 
     ctx.beginPath()
     ctx.arc(x, y, dotRadius, 0, Math.PI * 2)
