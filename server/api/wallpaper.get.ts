@@ -14,10 +14,12 @@ export default defineEventHandler(async (event) => {
   const bgColor = (query.bg_color as string) || '#000000';
   const filledColor = (query.filled_color as string) || '#FFFFFF';
   const emptyColor = (query.empty_color as string) || '#333333';
-  const paddingStr = query.padding as string;
+  const showPercentage = query.show_percentage === 'true';
   
-  // Calculate padding dynamically if not provided
-  const padding = paddingStr ? parseInt(paddingStr, 10) : Math.floor(width * 0.05);
+  // Safe Area calculations for iPhone lock screens
+  const paddingTop = Math.floor(height * 0.32); // 32% from top to clear clock and widgets
+  const paddingBottom = Math.floor(height * 0.16); // 16% from bottom to clear flashlight/camera
+  const paddingSides = Math.floor(width * 0.08); // 8% padding on sides
 
   // Date math
   const birthDate = parseISO(birthdateStr);
@@ -41,8 +43,8 @@ export default defineEventHandler(async (event) => {
   const cols = 52; // 52 weeks in a year
   const rows = lifespan; // One row per year
 
-  const usableWidth = width - padding * 2;
-  const usableHeight = height - padding * 2;
+  const usableWidth = width - paddingSides * 2;
+  const usableHeight = height - paddingTop - paddingBottom;
 
   const cellWidth = usableWidth / cols;
   const cellHeight = usableHeight / rows;
@@ -54,8 +56,8 @@ export default defineEventHandler(async (event) => {
   // Center the grid within the usable area
   const actualGridWidth = cols * cellSize;
   const actualGridHeight = rows * cellSize;
-  const offsetX = padding + (usableWidth - actualGridWidth) / 2;
-  const offsetY = padding + (usableHeight - actualGridHeight) / 2;
+  const offsetX = paddingSides + (usableWidth - actualGridWidth) / 2;
+  const offsetY = paddingTop + (usableHeight - actualGridHeight) / 2;
 
   // Drawing loop
   for (let i = 0; i < totalWeeks; i++) {
@@ -75,6 +77,21 @@ export default defineEventHandler(async (event) => {
     }
     
     ctx.fill();
+  }
+
+  // Draw Percentage
+  if (showPercentage) {
+    const percentage = ((displayLivedWeeks / totalWeeks) * 100).toFixed(2);
+    ctx.fillStyle = filledColor;
+    // Scale font size based on width
+    const fontSize = Math.floor(width * 0.04);
+    ctx.font = `600 ${fontSize}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Position text in the middle of the bottom safe area
+    const textY = height - (paddingBottom / 2);
+    ctx.fillText(`${percentage}%`, width / 2, textY);
   }
 
   // Response
