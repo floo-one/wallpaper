@@ -10,18 +10,14 @@ export default defineEventHandler(async (event) => {
   const lifespan = parseInt((query.lifespan as string) || '90', 10)
   const width = parseInt((query.width as string) || '1170', 10) // iPhone 12/13 Pro width
   const height = parseInt((query.height as string) || '2532', 10) // iPhone 12/13 Pro height
-  const category = (query.category as DeviceCategory) || 'notch'
 
   const bgColor = (query.bg_color as string) || '#000000'
   const filledColor = (query.filled_color as string) || '#FFFFFF'
   const emptyColor = (query.empty_color as string) || '#333333'
   const showPercentage = query.show_percentage === 'true'
 
-  // Safe Area calculations for iPhone lock screens based on device category
-  const { safeTop, safeBottom } = getSafeZones(category)
-  const paddingTop = Math.floor(height * safeTop)
-  const paddingBottom = Math.floor(height * safeBottom)
-  const paddingSides = Math.floor(width * 0.02) // 8% padding on sides
+  // Uniform margin for the top, left, and right edges
+  const margin = Math.floor(width * 0.08)
 
   // Date math
   const birthDate = parseISO(birthdateStr)
@@ -45,28 +41,24 @@ export default defineEventHandler(async (event) => {
   const cols = 52 // 52 weeks in a year
   const rows = lifespan // One row per year
 
-  const usableWidth = width - paddingSides * 2
-  const usableHeight = height - paddingTop - paddingBottom
+  const usableWidth = width - margin * 2
 
-  // Calculate cell width and height independently to fill the available space
-  const cellWidth = usableWidth / cols
-  const cellHeight = usableHeight / rows
+  // Force perfectly square cells so horizontal and vertical spacing is identical
+  const cellSize = usableWidth / cols
+  const dotRadius = (cellSize / 2) * 0.75 // 25% spacing between dots
 
-  // Ensure dots remain perfect circles by basing radius on the smaller cell dimension
-  const dotRadius = Math.min(cellWidth, cellHeight) / 2 * 0.75 // 25% spacing between dots
-
-  // Start drawing exactly from the padding edges
-  const offsetX = paddingSides
-  const offsetY = paddingTop
+  // Start drawing exactly from the uniform margins
+  const offsetX = margin
+  const offsetY = margin
 
   // Drawing loop
   for (let i = 0; i < totalWeeks; i++) {
     const col = i % cols
     const row = Math.floor(i / cols)
 
-    // Center the dot within its stretched cell
-    const x = offsetX + col * cellWidth + cellWidth / 2
-    const y = offsetY + row * cellHeight + cellHeight / 2
+    // Center the dot within its perfectly square cell
+    const x = offsetX + col * cellSize + cellSize / 2
+    const y = offsetY + row * cellSize + cellSize / 2
 
     ctx.beginPath()
     ctx.arc(x, y, dotRadius, 0, Math.PI * 2)
@@ -90,8 +82,9 @@ export default defineEventHandler(async (event) => {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    // Position text in the middle of the bottom safe area
-    const textY = height - (paddingBottom / 2)
+    // Move percentage lower, avoiding the "Do Not Disturb" island. 
+    // Usually positioned right between the flashlight and camera buttons.
+    const textY = height - Math.floor(height * 0.06)
     ctx.fillText(`${percentage}%`, width / 2, textY)
   }
 
