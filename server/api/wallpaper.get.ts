@@ -1,7 +1,7 @@
 import { defineEventHandler, getQuery, sendStream } from 'h3'
 import { createCanvas } from '@napi-rs/canvas'
 import { differenceInWeeks, addYears, parseISO } from 'date-fns'
-import { getSafeZones, type DeviceCategory } from '../../shared/utils/devices';
+import { getSafeZones, type DeviceCategory } from '../../shared/utils/devices'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   const { safeTop, safeBottom } = getSafeZones(category)
   const paddingTop = Math.floor(height * safeTop)
   const paddingBottom = Math.floor(height * safeBottom)
-  const paddingSides = Math.floor(width * 0.08) // 8% padding on sides
+  const paddingSides = Math.floor(width * 0.02) // 8% padding on sides
 
   // Date math
   const birthDate = parseISO(birthdateStr)

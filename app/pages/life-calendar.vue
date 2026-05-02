@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { IOS_DEVICES } from '../../shared/utils/devices'
+import { IOS_DEVICES } from '~~/shared/utils/devices'
 
 const birthdate = ref('1990-01-01')
 const lifespan = ref(90)
