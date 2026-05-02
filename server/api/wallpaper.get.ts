@@ -1,7 +1,6 @@
 import { defineEventHandler, getQuery, sendStream } from 'h3'
 import { createCanvas } from '@napi-rs/canvas'
 import { differenceInWeeks, addYears, parseISO } from 'date-fns'
-import { getSafeZones, type DeviceCategory } from '../../shared/utils/devices'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
