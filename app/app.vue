@@ -14,7 +14,7 @@ useHead({
 useSeoMeta({
   title: 'Life Calendar Wallpaper Generator',
   description: 'Generate dynamic Life Calendar wallpapers for your iPhone shortcuts.',
-  ogTitle: 'Life Calendar Wallpaper Generator',
+  ogTitle: 'Life Calendar Wallpaper Generator'
 })
 </script>
 
@@ -22,7 +22,9 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <div class="font-bold text-xl">Life Calendar Generator</div>
+        <div class="font-bold text-xl">
+          Life Calendar Generator
+        </div>
       </template>
 
       <template #right>

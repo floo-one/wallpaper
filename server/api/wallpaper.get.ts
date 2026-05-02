@@ -1,5 +1,5 @@
 import { defineEventHandler, getQuery, sendStream } from 'h3';
-import { createCanvas } from 'canvas';
+import { createCanvas } from '@napi-rs/canvas';
 import { differenceInDays, addYears, parseISO } from 'date-fns';
 
 export default defineEventHandler((event) => {

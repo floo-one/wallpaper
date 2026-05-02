@@ -13,8 +13,8 @@
   "dependencies": {
     "@iconify-json/lucide": "^1.2.104",
     "@iconify-json/simple-icons": "^1.2.80",
+    "@napi-rs/canvas": "^0.1.100",
     "@nuxt/ui": "^4.7.0",
-    "canvas": "^3.2.3",
     "date-fns": "^4.1.0",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.4"
