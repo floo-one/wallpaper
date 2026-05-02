@@ -23,17 +23,3 @@ Because the wallpaper generation is completely stateless, you can easily set up 
 1. Create a shortcut that fetches the image from the API endpoint using your specific parameters (such as birthdate).
 2. Use the "Set Wallpaper" action in Shortcuts to apply the fetched image to your lock screen or home screen.
 3. Set up a Personal Automation in the Shortcuts app to run this shortcut automatically on a schedule (e.g., weekly).
-
-## Local Development
-
-Make sure to install the dependencies:
-
-```bash
-pnpm install
-```
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-pnpm dev
-```
