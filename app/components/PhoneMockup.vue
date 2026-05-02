@@ -21,14 +21,12 @@ useHead({
 
 <template>
   <div class="relative mx-auto w-full shrink-0" :style="{ maxWidth }">
-    <iphone-16-max mode="dark" class="drop-shadow-2xl">
-      <img v-if="src" :src="src" class="w-full h-full object-cover" />
-    </iphone-16-max>
+    <div class="drop-shadow-2xl" v-html="`<iphone-16-max mode='dark'>${src ? `<img src='${src}' style='width: 100%; height: 100%; object-fit: cover;' />` : ''}</iphone-16-max>`"></div>
   </div>
 </template>
 
 <style scoped>
-iphone-16-max {
+:deep(iphone-16-max) {
   width: 100%;
   height: auto;
   display: block;

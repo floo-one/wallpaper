@@ -1,33 +1,30 @@
-# Nuxt Starter Template
+# Life Calendar Wallpaper Generator
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+A stateless API and web interface to generate dynamic Life Calendar wallpapers for your devices. 
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+Designed specifically to be used with iPhone shortcuts for automatic wallpaper updates, visualizing the weeks of your life.
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+**Website:** [wallpaper.floo.one](https://wallpaper.floo.one)
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png" width="830" height="466">
-  </picture>
-</a>
+## Features
+- Generate a dynamic Life Calendar visualizing elapsed and remaining weeks.
+- Stateless API architecture for quick and easy image generation.
+- Device mockup previews in the browser.
+- Built with Nuxt, Nuxt UI, Tailwind CSS, and NAPI-RS Canvas.
 
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
+## Usage
 
-## Quick Start
+### Web Interface
+Visit the website at [wallpaper.floo.one](https://wallpaper.floo.one) to preview the generated wallpaper on different device mockups. You can interact with the options on the site to see how the calendar will look for your specific birthdate.
 
-```bash [Terminal]
-npm create nuxt@latest -- -t ui
-```
+### Automation (Shortcuts)
+Because the wallpaper generation is completely stateless, you can easily set up an iOS Shortcut (or similar automation on other operating systems) to fetch a fresh image periodically (e.g., every Monday) and set it as your wallpaper.
 
-## Deploy your own
+1. Create a shortcut that fetches the image from the API endpoint using your specific parameters (such as birthdate).
+2. Use the "Set Wallpaper" action in Shortcuts to apply the fetched image to your lock screen or home screen.
+3. Set up a Personal Automation in the Shortcuts app to run this shortcut automatically on a schedule (e.g., weekly).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
-
-## Setup
+## Local Development
 
 Make sure to install the dependencies:
 
@@ -35,30 +32,8 @@ Make sure to install the dependencies:
 pnpm install
 ```
 
-## Development Server
-
 Start the development server on `http://localhost:3000`:
 
 ```bash
 pnpm dev
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-pnpm build
-```
-
-Locally preview production build:
-
-```bash
-pnpm preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-
-## Renovate integration
-
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
