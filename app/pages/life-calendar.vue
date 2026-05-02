@@ -1,31 +1,35 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { IOS_DEVICES } from '~/shared/utils/devices'
 
 const birthdate = ref('1990-01-01')
 const lifespan = ref(90)
 const bgColor = ref('#000000')
 const filledColor = ref('#FFFFFF')
 const emptyColor = ref('#333333')
+const showPercentage = ref(true)
 
-const presets = [
-  { label: 'iPhone 12/13/14 (1170x2532)', value: '1170x2532' },
-  { label: 'iPhone 12/13 mini (1080x2340)', value: '1080x2340' },
-  { label: 'iPhone 14 Pro (1179x2556)', value: '1179x2556' },
-  { label: 'iPhone 14 Pro Max (1290x2796)', value: '1290x2796' }
-]
-const selectedPreset = ref(presets[0].value)
+const presets = IOS_DEVICES.map(device => ({
+  label: `${device.model} (${device.width}x${device.height})`,
+  value: `${device.width}x${device.height}x${device.category}`
+}))
+const selectedPreset = ref(presets.find(p => p.label.includes('14 Pro /'))?.value || presets[0].value)
 
 const wallpaperUrl = computed(() => {
-  const [width, height] = selectedPreset.value.split('x')
-  const params = new URLSearchParams({
+  const [width, height, category] = (selectedPreset.value || '1179x2556xisland').split('x')
+  const paramsRecord: Record<string, string> = {
     birthdate: birthdate.value,
     lifespan: lifespan.value.toString(),
     bg_color: bgColor.value,
     filled_color: filledColor.value,
     empty_color: emptyColor.value,
-    width,
-    height
-  })
+    show_percentage: showPercentage.value.toString()
+  }
+  if (width) paramsRecord.width = width
+  if (height) paramsRecord.height = height
+  if (category) paramsRecord.category = category
+
+  const params = new URLSearchParams(paramsRecord)
 
   // Return the absolute URL if in browser, else relative
   const base = typeof window !== 'undefined' ? window.location.origin : ''
@@ -112,6 +116,13 @@ const copyUrl = async () => {
                 class="flex-1"
               />
             </div>
+          </UFormField>
+
+          <UFormField>
+            <UCheckbox
+              v-model="showPercentage"
+              label="Show completion percentage at the bottom"
+            />
           </UFormField>
 
           <UFormField label="Device Preset">
