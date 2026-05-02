@@ -1,6 +1,6 @@
 import { defineEventHandler, getQuery, sendStream } from 'h3';
 import { createCanvas } from '@napi-rs/canvas';
-import { differenceInDays, addYears, parseISO } from 'date-fns';
+import { differenceInWeeks, addYears, parseISO } from 'date-fns';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -22,13 +22,12 @@ export default defineEventHandler(async (event) => {
   // Date math
   const birthDate = parseISO(birthdateStr);
   const today = new Date();
-  const deathDate = addYears(birthDate, lifespan);
+  
+  const totalWeeks = lifespan * 52;
+  const livedWeeks = Math.max(0, differenceInWeeks(today, birthDate));
 
-  const totalDays = differenceInDays(deathDate, birthDate);
-  const livedDays = Math.max(0, differenceInDays(today, birthDate));
-
-  // Ensure livedDays doesn't exceed totalDays
-  const displayLivedDays = Math.min(livedDays, totalDays);
+  // Ensure livedWeeks doesn't exceed totalWeeks
+  const displayLivedWeeks = Math.min(livedWeeks, totalWeeks);
 
   // Canvas setup
   const canvas = createCanvas(width, height);
@@ -39,28 +38,18 @@ export default defineEventHandler(async (event) => {
   ctx.fillRect(0, 0, width, height);
 
   // Grid math
-  // We need an optimal number of columns and rows to fit the total days within the screen bounds
+  const cols = 52; // 52 weeks in a year
+  const rows = lifespan; // One row per year
+
   const usableWidth = width - padding * 2;
   const usableHeight = height - padding * 2;
-  const aspectRatio = usableHeight / usableWidth;
-
-  // cols * rows = totalDays
-  // rows / cols = aspectRatio -> rows = cols * aspectRatio
-  // cols * (cols * aspectRatio) = totalDays
-  // cols^2 = totalDays / aspectRatio
-  let cols = Math.ceil(Math.sqrt(totalDays / aspectRatio));
-  let rows = Math.ceil(totalDays / cols);
-
-  // Re-adjust if necessary
-  while (cols * rows < totalDays) {
-    rows++;
-  }
 
   const cellWidth = usableWidth / cols;
   const cellHeight = usableHeight / rows;
-  const cellSize = Math.min(cellWidth, cellHeight);
   
-  const dotRadius = cellSize / 2 * 0.7; // 30% spacing between dots
+  // We want perfectly square cells, so we take the smaller of the two
+  const cellSize = Math.min(cellWidth, cellHeight);
+  const dotRadius = cellSize / 2 * 0.75; // 25% spacing between dots
 
   // Center the grid within the usable area
   const actualGridWidth = cols * cellSize;
@@ -69,7 +58,7 @@ export default defineEventHandler(async (event) => {
   const offsetY = padding + (usableHeight - actualGridHeight) / 2;
 
   // Drawing loop
-  for (let i = 0; i < totalDays; i++) {
+  for (let i = 0; i < totalWeeks; i++) {
     const col = i % cols;
     const row = Math.floor(i / cols);
 
@@ -79,7 +68,7 @@ export default defineEventHandler(async (event) => {
     ctx.beginPath();
     ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
 
-    if (i < displayLivedDays) {
+    if (i < displayLivedWeeks) {
       ctx.fillStyle = filledColor;
     } else {
       ctx.fillStyle = emptyColor;

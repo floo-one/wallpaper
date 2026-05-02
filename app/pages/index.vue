@@ -3,7 +3,7 @@ const wallpapers = [
   {
     id: 'life-calendar',
     title: 'Life Calendar',
-    description: 'A 90-year life calendar that visualizes the days you have lived and the days you have left.',
+    description: 'A 90-year life calendar that visualizes the weeks you have lived and the weeks you have left.',
     path: '/life-calendar',
     previewUrl: '/api/wallpaper?birthdate=1990-01-01&lifespan=90&bg_color=%23000000&filled_color=%23FFFFFF&empty_color=%23333333&width=1170&height=2532'
   }
