@@ -1,4 +1,4 @@
-# Life Calendar Wallpaper Generator
+# Dynmaic Wallpaper Generator
 
 A stateless API and web interface to generate dynamic Life Calendar wallpapers for your devices. 
 
