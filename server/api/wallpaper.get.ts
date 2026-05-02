@@ -1,6 +1,7 @@
 import { defineEventHandler, getQuery, sendStream } from 'h3'
 import { createCanvas } from '@napi-rs/canvas'
 import { differenceInWeeks, addYears, parseISO } from 'date-fns'
+import { getSafeZones, type DeviceCategory } from '~~/shared/utils/devices'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -10,14 +11,18 @@ export default defineEventHandler(async (event) => {
   const lifespan = parseInt((query.lifespan as string) || '90', 10)
   const width = parseInt((query.width as string) || '1170', 10) // iPhone 12/13 Pro width
   const height = parseInt((query.height as string) || '2532', 10) // iPhone 12/13 Pro height
+  const category = (query.category as DeviceCategory) || 'notch'
 
   const bgColor = (query.bg_color as string) || '#000000'
   const filledColor = (query.filled_color as string) || '#FFFFFF'
   const emptyColor = (query.empty_color as string) || '#333333'
   const showPercentage = query.show_percentage === 'true'
 
-  // Uniform margin for the top, left, and right edges
-  const margin = Math.floor(width * 0.08)
+  // Safe Area calculations for iPhone lock screens based on device category
+  const { safeTop, safeBottom } = getSafeZones(category)
+  const paddingTop = Math.floor(height * safeTop)
+  const paddingBottom = Math.floor(height * safeBottom)
+  const paddingSides = Math.floor(width * 0.08) // 8% minimum padding on sides
 
   // Date math
   const birthDate = parseISO(birthdateStr)
@@ -41,15 +46,24 @@ export default defineEventHandler(async (event) => {
   const cols = 52 // 52 weeks in a year
   const rows = lifespan // One row per year
 
-  const usableWidth = width - margin * 2
+  const maxUsableWidth = width - paddingSides * 2
+  const maxUsableHeight = height - paddingTop - paddingBottom
 
-  // Force perfectly square cells so horizontal and vertical spacing is identical
-  const cellSize = usableWidth / cols
+  // Calculate cell width and height independently
+  const cellWidth = maxUsableWidth / cols
+  const cellHeight = maxUsableHeight / rows
+
+  // Force perfectly square cells by taking the smallest dimension
+  // This ensures dots are perfect circles and the grid never exceeds the safe areas
+  const cellSize = Math.min(cellWidth, cellHeight)
   const dotRadius = (cellSize / 2) * 0.75 // 25% spacing between dots
 
-  // Start drawing exactly from the uniform margins
-  const offsetX = margin
-  const offsetY = margin
+  const actualGridWidth = cols * cellSize
+  const actualGridHeight = rows * cellSize
+
+  // Center the grid within the usable safe area
+  const offsetX = paddingSides + (maxUsableWidth - actualGridWidth) / 2
+  const offsetY = paddingTop + (maxUsableHeight - actualGridHeight) / 2
 
   // Drawing loop
   for (let i = 0; i < totalWeeks; i++) {
@@ -83,8 +97,8 @@ export default defineEventHandler(async (event) => {
     ctx.textBaseline = 'middle'
 
     // Move percentage lower, avoiding the "Do Not Disturb" island. 
-    // Usually positioned right between the flashlight and camera buttons.
-    const textY = height - Math.floor(height * 0.06)
+    // Positioned in the middle of the bottom safe area
+    const textY = height - Math.floor(paddingBottom / 2)
     ctx.fillText(`${percentage}%`, width / 2, textY)
   }
 
