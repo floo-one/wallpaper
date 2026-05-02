@@ -1,31 +1,31 @@
-import { defineEventHandler, getQuery, sendStream } from 'h3';
-import { createCanvas } from '@napi-rs/canvas';
-import { differenceInWeeks, addYears, parseISO } from 'date-fns';
-import { getSafeZones, type DeviceCategory } from '~/shared/utils/devices';
+import { defineEventHandler, getQuery, sendStream } from 'h3'
+import { createCanvas } from '@napi-rs/canvas'
+import { differenceInWeeks, addYears, parseISO } from 'date-fns'
+import { getSafeZones, type DeviceCategory } from '../../shared/utils/devices';
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
+  const query = getQuery(event)
 
   // Parse parameters with defaults
-  const birthdateStr = (query.birthdate as string) || '1990-01-01';
-  const lifespan = parseInt((query.lifespan as string) || '90', 10);
-  const width = parseInt((query.width as string) || '1170', 10); // iPhone 12/13 Pro width
-  const height = parseInt((query.height as string) || '2532', 10); // iPhone 12/13 Pro height
-  const category = (query.category as DeviceCategory) || 'notch';
+  const birthdateStr = (query.birthdate as string) || '1990-01-01'
+  const lifespan = parseInt((query.lifespan as string) || '90', 10)
+  const width = parseInt((query.width as string) || '1170', 10) // iPhone 12/13 Pro width
+  const height = parseInt((query.height as string) || '2532', 10) // iPhone 12/13 Pro height
+  const category = (query.category as DeviceCategory) || 'notch'
 
-  const bgColor = (query.bg_color as string) || '#000000';
-  const filledColor = (query.filled_color as string) || '#FFFFFF';
-  const emptyColor = (query.empty_color as string) || '#333333';
-  const showPercentage = query.show_percentage === 'true';
+  const bgColor = (query.bg_color as string) || '#000000'
+  const filledColor = (query.filled_color as string) || '#FFFFFF'
+  const emptyColor = (query.empty_color as string) || '#333333'
+  const showPercentage = query.show_percentage === 'true'
 
   // Safe Area calculations for iPhone lock screens based on device category
-  const { safeTop, safeBottom } = getSafeZones(category);
-  const paddingTop = Math.floor(height * safeTop); 
-  const paddingBottom = Math.floor(height * safeBottom);
-  const paddingSides = Math.floor(width * 0.08); // 8% padding on sides
+  const { safeTop, safeBottom } = getSafeZones(category)
+  const paddingTop = Math.floor(height * safeTop)
+  const paddingBottom = Math.floor(height * safeBottom)
+  const paddingSides = Math.floor(width * 0.08) // 8% padding on sides
 
   // Date math
-  const birthDate = parseISO(birthdateStr);
+  const birthDate = parseISO(birthdateStr)
   const today = new Date()
 
   const totalWeeks = lifespan * 52
