@@ -2,7 +2,7 @@ import { defineEventHandler, getQuery, sendStream } from 'h3';
 import { createCanvas } from '@napi-rs/canvas';
 import { differenceInDays, addYears, parseISO } from 'date-fns';
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const query = getQuery(event);
 
   // Parse parameters with defaults
@@ -90,5 +90,6 @@ export default defineEventHandler((event) => {
 
   // Response
   event.node.res.setHeader('Content-Type', 'image/png');
-  return sendStream(event, canvas.createPNGStream());
+  const buffer = await canvas.encode('png');
+  return buffer;
 });

@@ -25,40 +25,32 @@ const wallpapers = [
 
     <!-- Wallpaper Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <UCard
-        v-for="wallpaper in wallpapers"
+      <NuxtLink 
+        v-for="wallpaper in wallpapers" 
         :key="wallpaper.id"
-        class="group hover:ring-2 hover:ring-primary-500 transition-all cursor-pointer flex flex-col"
         :to="wallpaper.path"
+        class="block group outline-none"
       >
-        <template #header>
-          <h3 class="text-xl font-bold">
-            {{ wallpaper.title }}
-          </h3>
-          <p class="text-sm text-gray-500 line-clamp-2 mt-1">
-            {{ wallpaper.description }}
-          </p>
-        </template>
+        <UCard 
+          class="h-full flex flex-col group-hover:ring-2 group-hover:ring-primary-500 group-focus-visible:ring-2 group-focus-visible:ring-primary-500 transition-all cursor-pointer"
+        >
+          <template #header>
+            <h3 class="text-xl font-bold group-hover:text-primary-600 transition-colors">{{ wallpaper.title }}</h3>
+            <p class="text-sm text-gray-500 line-clamp-2 mt-1">{{ wallpaper.description }}</p>
+          </template>
+          
+          <div class="flex-1 flex items-center justify-center py-8 bg-gray-50 dark:bg-gray-900/50 rounded-lg overflow-hidden group-hover:bg-gray-100 dark:group-hover:bg-gray-800/80 transition-colors">
+            <PhoneMockup :src="wallpaper.previewUrl" class="scale-[0.65] sm:scale-75 origin-center transform transition-transform group-hover:scale-75 sm:group-hover:scale-[0.80]" />
+          </div>
 
-        <div class="flex-1 flex items-center justify-center py-6 bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors">
-          <PhoneMockup
-            :src="wallpaper.previewUrl"
-            class="scale-75 md:scale-90 origin-center transform transition-transform group-hover:scale-100"
-          />
-        </div>
-
-        <template #footer>
-          <UButton
-            color="gray"
-            variant="ghost"
-            block
-            icon="i-heroicons-arrow-right"
-            class="group-hover:bg-primary-50 dark:group-hover:bg-primary-950 group-hover:text-primary-600"
-          >
-            Configure
-          </UButton>
-        </template>
-      </UCard>
+          <template #footer>
+            <div class="flex items-center justify-between text-primary-600 font-medium">
+              <span>Configure wallpaper</span>
+              <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+            </div>
+          </template>
+        </UCard>
+      </NuxtLink>
     </div>
   </UContainer>
 </template>
